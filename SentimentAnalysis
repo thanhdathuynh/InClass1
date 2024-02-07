@@ -1,16 +1,47 @@
-import java.util.StringTokenizer;
+/* This program does the following:
+
+1. Takes a text string as input
+
+2. Outputs a message about the sentiment of the text string, whether it’s “Positive”, “Negative” or “Neutral”. */
+
 import java.util.Scanner;
 
 public class SentimentAnalysis {
-	
-	
+
     public static String analyzeSentiment(String text) {
-        Sentimentr sentimentr = new Sentimentr();
-        double sentimentScore = sentimentr.getSentiment(text);
-        
-        if (sentimentScore > 0.5) {
+        // Convert text to lowercase for case-insensitive comparison
+        text = text.toLowerCase();
+
+        // Define lists of positive and negative words
+        String[] positiveWords = {"good", "happy", "joy", "love", "great"};
+        String[] negativeWords = {"bad", "sad", "hate", "disappointed", "angry"};
+
+        // Split the text into words
+        String[] words = text.split("\\s+");
+
+        // Count the number of positive and negative words
+        int positiveCount = 0;
+        int negativeCount = 0;
+
+        for (String word : words) {
+            for (String positiveWord : positiveWords) {
+                if (word.contains(positiveWord)) {
+                    positiveCount++;
+                    break;
+                }
+            }
+            for (String negativeWord : negativeWords) {
+                if (word.contains(negativeWord)) {
+                    negativeCount++;
+                    break;
+                }
+            }
+        }
+
+        // Determine sentiment based on the count of positive and negative words
+        if (positiveCount > negativeCount) {
             return "Positive";
-        } else if (sentimentScore < 0.5) {
+        } else if (positiveCount < negativeCount) {
             return "Negative";
         } else {
             return "Neutral";
@@ -18,29 +49,14 @@ public class SentimentAnalysis {
     }
 
     public static void main(String[] args) {
-    	Scanner input = new Scanner (System.in);
-    	
-        System.out.println("Enter your text: ");
-        String text = input.nextLine();
-        
-        String sentiment = analyzeSentiment(text);
-        System.out.println("Sentiment: " + sentiment);
-    }
-}
+        Scanner scanner = new Scanner(System.in);
 
-class Sentimentr {
-	
-	public int getSentiment(String text) {
-		int score = 0;
-		StringTokenizer st = new StringTokenizer(text);
-		
-		while (st.hasMoreTokens()) {
-			if(st.nextToken().equals("happy")){
-				score = 1;
-			} else {
-				score = 0;
-			}
-		}
-		return score;
-	}
+        System.out.print("Enter the text to analyze sentiment: ");
+        String text = scanner.nextLine();
+
+        String sentiment = analyzeSentiment(text);
+        System.out.println("Sentiment of the text is: " + sentiment);
+
+        scanner.close();
+    }
 }
