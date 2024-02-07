@@ -1,0 +1,46 @@
+import java.util.StringTokenizer;
+import java.util.Scanner;
+
+public class SentimentAnalysis {
+	
+	
+    public static String analyzeSentiment(String text) {
+        Sentimentr sentimentr = new Sentimentr();
+        double sentimentScore = sentimentr.getSentiment(text);
+        
+        if (sentimentScore > 0.5) {
+            return "Positive";
+        } else if (sentimentScore < 0.5) {
+            return "Negative";
+        } else {
+            return "Neutral";
+        }
+    }
+
+    public static void main(String[] args) {
+    	Scanner input = new Scanner (System.in);
+    	
+        System.out.println("Enter your text: ");
+        String text = input.nextLine();
+        
+        String sentiment = analyzeSentiment(text);
+        System.out.println("Sentiment: " + sentiment);
+    }
+}
+
+class Sentimentr {
+	
+	public int getSentiment(String text) {
+		int score = 0;
+		StringTokenizer st = new StringTokenizer(text);
+		
+		while (st.hasMoreTokens()) {
+			if(st.nextToken().equals("happy")){
+				score = 1;
+			} else {
+				score = 0;
+			}
+		}
+		return score;
+	}
+}
